@@ -43,21 +43,21 @@ public class ParkingRepository {
         return Optional.of(parking);
     }
 
-    public Boolean deleteById(Long id) {
+    public Parking deleteById(Long id) {
         Transaction transaction = null;
-        boolean deletedItemExisted = false;
+        Parking parking = new Parking();
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.getTransaction();
-            Optional<Parking> optParking = Optional.ofNullable(session.getReference(Parking.class, id));
+            transaction = session.beginTransaction();
+            Optional<Parking> optParking = Optional.ofNullable(session.find(Parking.class, id));
             if (optParking.isPresent()) {
                 session.remove(optParking.get());
-                deletedItemExisted = true;
+                parking = optParking.get();
             }
             transaction.commit();
         } catch (Exception ex) {
             catchException(ex, transaction);
         }
-        return deletedItemExisted;
+        return parking;
     }
 
     private void catchException(Exception ex, Transaction tr) {
