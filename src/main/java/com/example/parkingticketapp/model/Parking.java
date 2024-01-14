@@ -11,12 +11,13 @@ import lombok.*;
 @Table(name = "parking")
 public class Parking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "title")
     private String title;
     @Column(name = "description")
     private String description;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
     @Column(name = "total_parking_spaces")

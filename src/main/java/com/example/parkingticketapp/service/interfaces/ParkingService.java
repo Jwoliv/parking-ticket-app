@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface ParkingService {
 
     ResponseEntity<ParkingDto> generateInfoAboutParking(Long id);
+    ResponseEntity<ParkingDto> saveNewParking(ParkingDto parking);
 }

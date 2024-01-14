@@ -15,14 +15,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class ParkingServiceImpl implements ParkingService {
     @Setter(onMethod = @__(@Autowired))
-    private ParkingRepository repository;
+    private ParkingRepository parkingRepository;
     @Setter(onMethod = @__(@Autowired))
     private ParkingMapper parkingMapper;
 
     @Override
     public ResponseEntity<ParkingDto> generateInfoAboutParking(Long id) {
-        Parking parking = repository.findById(id);
+        Parking parking = parkingRepository.findById(id);
         ParkingDto parkingDto = parkingMapper.entityParkingToDto(parking);
         return ResponseEntity.ok(parkingDto);
+    }
+
+    @Override
+    public ResponseEntity<ParkingDto> saveNewParking(ParkingDto parkingDto) {
+        Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
+        Parking savedParking = parkingRepository.save(parking).orElseThrow();
+        return ResponseEntity.ok(parkingMapper.entityParkingToDto(savedParking));
     }
 }
