@@ -28,4 +28,10 @@ public class Ticket {
     private LocalDateTime endTime;
     @Column(name = "key")
     private String key;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "parking_id")
+    private Parking parking;
 }
