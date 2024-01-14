@@ -22,7 +22,6 @@ public class Address {
     private Integer number;
     @Column(name = "add_info")
     private String addInfo;
-    @JsonIgnore
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Parking parking;
 }

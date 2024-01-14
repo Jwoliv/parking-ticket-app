@@ -12,5 +12,4 @@ public class AddressDto {
     private String street;
     private Integer number;
     private String addInfo;
-    private Parking parking;
 }
