@@ -36,7 +36,6 @@ public class ParkingRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.persist(parking);
-            session.merge(parking);
             transaction.commit();
         } catch (Exception ex) {
             catchException(ex, transaction);

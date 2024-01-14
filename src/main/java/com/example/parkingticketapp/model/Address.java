@@ -19,7 +19,7 @@ public class Address {
     private String street;
     @Column(name = "number")
     private Integer number;
-    @Column(name = "add_info", nullable = false)
+    @Column(name = "add_info")
     private String addInfo;
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Parking parking;
