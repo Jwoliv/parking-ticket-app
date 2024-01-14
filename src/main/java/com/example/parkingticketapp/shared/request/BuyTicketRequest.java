@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class BuyTicketRequest {
     private Long parkingId;
     private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private Float amountPayedMoney;
     private String personalKey;
 }

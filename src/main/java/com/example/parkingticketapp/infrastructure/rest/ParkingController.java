@@ -2,8 +2,6 @@ package com.example.parkingticketapp.infrastructure.rest;
 
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.dto.TicketDto;
-import com.example.parkingticketapp.shared.request.BuyTicketRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +32,5 @@ public class ParkingController {
     @PostMapping
     public ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(@RequestBody ParkingDto parking) {
         return parkingService.saveNewParking(parking);
-    }
-
-    @PostMapping("/buy-ticket")
-    private ResponseEntity<TicketDto> buyTicket(@RequestBody BuyTicketRequest request) {
-        return null;
     }
 }

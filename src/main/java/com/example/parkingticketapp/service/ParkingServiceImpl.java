@@ -31,6 +31,13 @@ public class ParkingServiceImpl implements ParkingService {
     private ActionResponseMapper actionResponseMapper;
 
     @Override
+    public Parking findById(Long id) {
+        Parking parking = parkingRepository.findById(id);
+        checkExistedParking(id, parking);
+        return parking;
+    }
+
+    @Override
     public ResponseEntity<ParkingDto> generateInfoAboutParking(Long id) {
         Parking parking = parkingRepository.findById(id);
         checkExistedParking(id, parking);
