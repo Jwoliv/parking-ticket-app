@@ -7,7 +7,7 @@ import com.example.parkingticketapp.repository.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
-import com.example.parkingticketapp.shared.mapper.ActionResponseMapper;
+import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.shared.response.ActionResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
 
-    private static void checkExistedParking(Long id, Parking parking) {
+    private void checkExistedParking(Long id, Parking parking) {
         if (Objects.isNull(parking)) {
             throw new CustomException(HttpStatus.NOT_FOUND, String.format(ELEMENT_WITH_ID_DOES_NOT_EXIST, Parking.class.getSimpleName(), id));
         }

@@ -1,7 +1,5 @@
-package com.example.parkingticketapp.shared.mapper;
+package com.example.parkingticketapp.mapper;
 
-import com.example.parkingticketapp.mapper.AddressMapper;
-import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
 import com.example.parkingticketapp.shared.response.ActionResponse;

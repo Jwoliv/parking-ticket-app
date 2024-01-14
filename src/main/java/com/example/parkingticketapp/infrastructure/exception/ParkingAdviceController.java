@@ -2,7 +2,7 @@ package com.example.parkingticketapp.infrastructure.exception;
 
 import com.example.parkingticketapp.exception.CustomException;
 import com.example.parkingticketapp.shared.dto.CustomExceptionDto;
-import com.example.parkingticketapp.shared.mapper.ExceptionDtoMapper;
+import com.example.parkingticketapp.mapper.ExceptionDtoMapper;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
