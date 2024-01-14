@@ -1,8 +1,7 @@
 package com.example.parkingticketapp.service.interfaces;
 
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.response.CreatedResponse;
-import com.example.parkingticketapp.shared.response.DeletedResponse;
+import com.example.parkingticketapp.shared.response.ActionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +9,6 @@ import org.springframework.stereotype.Service;
 public interface ParkingService {
 
     ResponseEntity<ParkingDto> generateInfoAboutParking(Long id);
-    ResponseEntity<CreatedResponse<ParkingDto>> saveNewParking(ParkingDto parking);
-    ResponseEntity<DeletedResponse<ParkingDto>> deleteById(Long id);
+    ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(ParkingDto parking);
+    ResponseEntity<ActionResponse<ParkingDto>> deleteById(Long id);
 }

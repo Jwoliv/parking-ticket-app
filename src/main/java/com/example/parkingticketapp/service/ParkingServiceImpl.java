@@ -6,10 +6,9 @@ import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.repository.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.mapper.CreatedResponseMapper;
-import com.example.parkingticketapp.shared.mapper.DeletedResponseMapper;
-import com.example.parkingticketapp.shared.response.CreatedResponse;
-import com.example.parkingticketapp.shared.response.DeletedResponse;
+import com.example.parkingticketapp.shared.enums.CrudAction;
+import com.example.parkingticketapp.shared.mapper.ActionResponseMapper;
+import com.example.parkingticketapp.shared.response.ActionResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Setter(onMethod = @__(@Autowired))
     private ParkingMapper parkingMapper;
     @Setter(onMethod = @__(@Autowired))
-    private DeletedResponseMapper deletedResponseMapper;
-    @Setter(onMethod = @__(@Autowired))
-    private CreatedResponseMapper createdResponseMapper;
+    private ActionResponseMapper actionResponseMapper;
 
     @Override
     public ResponseEntity<ParkingDto> generateInfoAboutParking(Long id) {
@@ -42,19 +39,19 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ResponseEntity<CreatedResponse<ParkingDto>> saveNewParking(ParkingDto parkingDto) {
+    public ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
         Parking savedParking = parkingRepository.save(parking).orElseThrow();
         ParkingDto newParkingDto =  parkingMapper.entityParkingToDto(savedParking);
-        CreatedResponse<ParkingDto> response = createdResponseMapper.toResponse(newParkingDto);
+        ActionResponse<ParkingDto> response = actionResponseMapper.toResponse(newParkingDto, CrudAction.CREATE);
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<DeletedResponse<ParkingDto>> deleteById(Long id) {
+    public ResponseEntity<ActionResponse<ParkingDto>> deleteById(Long id) {
         Parking parking = parkingRepository.deleteById(id);
         ParkingDto parkingDto = parkingMapper.entityParkingToDto(parking);
-        DeletedResponse<ParkingDto> response = deletedResponseMapper.toResponse(parkingDto);
+        ActionResponse<ParkingDto> response = actionResponseMapper.toResponse(parkingDto, CrudAction.DELETE);
         return ResponseEntity.ok(response);
     }
 
