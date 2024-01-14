@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.repository;
 
-import com.example.parkingticketapp.model.Address;
 import com.example.parkingticketapp.model.Parking;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,21 +15,22 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
+@Transactional
 public class ParkingRepository {
     @Setter(onMethod = @__(@Autowired))
     private SessionFactory sessionFactory;
 
+    @Transactional(readOnly = true)
     public Parking findById(Long id) {
         Parking parking = new Parking();
         try (Session session = sessionFactory.openSession()) {
-            parking = Optional.ofNullable(session.getReference(Parking.class, id)).orElseThrow();
+            parking = session.find(Parking.class, id);
         } catch (Exception ex) {
             catchException(ex);
         }
         return parking;
     }
 
-    @Transactional
     public Optional<Parking> save(Parking parking) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -43,7 +43,6 @@ public class ParkingRepository {
         return Optional.of(parking);
     }
 
-    @Transactional
     public Boolean deleteById(Long id) {
         Transaction transaction = null;
         boolean deletedItemExisted = false;

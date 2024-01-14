@@ -17,7 +17,7 @@ public class Parking {
     private String title;
     @Column(name = "description")
     private String description;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private Address address;
     @Column(name = "total_parking_spaces")
