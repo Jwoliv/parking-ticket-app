@@ -11,7 +11,6 @@ import com.example.parkingticketapp.shared.mapper.DeletedResponseMapper;
 import com.example.parkingticketapp.shared.response.CreatedResponse;
 import com.example.parkingticketapp.shared.response.DeletedResponse;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
