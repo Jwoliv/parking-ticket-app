@@ -60,6 +60,22 @@ public class ParkingRepository {
         return parking;
     }
 
+
+    public Parking updateParkingById(Long id, Parking parking) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Optional<Parking> optParking = Optional.ofNullable(session.find(Parking.class, id));
+            if (optParking.isPresent()) {
+                session.merge(parking);
+            }
+            transaction.commit();
+        } catch (Exception ex) {
+            catchException(ex, transaction);
+        }
+        return parking;
+    }
+
     private void catchException(Exception ex, Transaction tr) {
         log.error(ex.getMessage(), ex);
         Objects.requireNonNull(tr).rollback();

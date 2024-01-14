@@ -55,6 +55,14 @@ public class ParkingServiceImpl implements ParkingService {
         return ResponseEntity.ok(response);
     }
 
+    @Override
+    public ResponseEntity<ParkingDto> updateExistedParking(ParkingDto parkingDto) {
+        Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
+        Parking updateParking = parkingRepository.updateParkingById(parking.getId(), parking);
+        ParkingDto newParkingDto = parkingMapper.entityParkingToDto(updateParking);
+        return ResponseEntity.ok(newParkingDto);
+    }
+
 
     private static void checkExistedParking(Long id, Parking parking) {
         if (Objects.isNull(parking)) {

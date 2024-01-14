@@ -19,6 +19,11 @@ public class ParkingController {
         return parkingService.generateInfoAboutParking(id);
     }
 
+    @PutMapping
+    public ResponseEntity<ParkingDto> updateParkingInfoById(@RequestBody ParkingDto parkingDto) {
+        return parkingService.updateExistedParking(parkingDto);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ActionResponse<ParkingDto>> deleteParkingById(@PathVariable("id") Long id) {
         return parkingService.deleteById(id);
