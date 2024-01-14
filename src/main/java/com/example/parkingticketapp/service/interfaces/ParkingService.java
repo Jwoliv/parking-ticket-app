@@ -11,5 +11,5 @@ public interface ParkingService {
     ResponseEntity<ParkingDto> generateInfoAboutParking(Long id);
     ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(ParkingDto parking);
     ResponseEntity<ActionResponse<ParkingDto>> deleteById(Long id);
-    ResponseEntity<ParkingDto> updateExistedParking(ParkingDto parkingDto);
+    ResponseEntity<ActionResponse<ParkingDto>> updateExistedParking(ParkingDto parkingDto);
 }

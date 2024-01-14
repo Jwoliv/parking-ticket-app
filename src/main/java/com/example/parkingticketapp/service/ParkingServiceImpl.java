@@ -56,11 +56,11 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ResponseEntity<ParkingDto> updateExistedParking(ParkingDto parkingDto) {
+    public ResponseEntity<ActionResponse<ParkingDto>> updateExistedParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
         Parking updateParking = parkingRepository.updateParkingById(parking.getId(), parking);
         ParkingDto newParkingDto = parkingMapper.entityParkingToDto(updateParking);
-        return ResponseEntity.ok(newParkingDto);
+        return ResponseEntity.ok(actionResponseMapper.toResponse(newParkingDto, CrudAction.UPDATE));
     }
 
 

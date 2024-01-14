@@ -21,9 +21,7 @@ public class Address {
     @Column(name = "street")
     private String street;
     @Column(name = "number")
-    private Integer number;
-    @Column(name = "add_info")
-    private String addInfo;
+    private String number;
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Parking parking;
 }

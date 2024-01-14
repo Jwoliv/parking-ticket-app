@@ -20,7 +20,7 @@ public class ParkingController {
     }
 
     @PutMapping
-    public ResponseEntity<ParkingDto> updateParkingInfoById(@RequestBody ParkingDto parkingDto) {
+    public ResponseEntity<ActionResponse<ParkingDto>> updateParkingInfoById(@RequestBody ParkingDto parkingDto) {
         return parkingService.updateExistedParking(parkingDto);
     }
 
