@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteResponse<T> {
+public class DeletedResponse<T> {
     private T deletedElement;
     private LocalDateTime timeDeleted;
     private Boolean isSucceed;

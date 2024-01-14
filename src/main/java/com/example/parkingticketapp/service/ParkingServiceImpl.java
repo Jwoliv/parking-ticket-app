@@ -6,9 +6,9 @@ import com.example.parkingticketapp.repository.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.mapper.CreatedResponseMapper;
-import com.example.parkingticketapp.shared.mapper.DeleteResponseMapper;
+import com.example.parkingticketapp.shared.mapper.DeletedResponseMapper;
 import com.example.parkingticketapp.shared.response.CreatedResponse;
-import com.example.parkingticketapp.shared.response.DeleteResponse;
+import com.example.parkingticketapp.shared.response.DeletedResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Setter(onMethod = @__(@Autowired))
     private ParkingMapper parkingMapper;
     @Setter(onMethod = @__(@Autowired))
-    private DeleteResponseMapper deleteResponseMapper;
+    private DeletedResponseMapper deletedResponseMapper;
     @Setter(onMethod = @__(@Autowired))
     private CreatedResponseMapper createdResponseMapper;
 
@@ -44,10 +44,10 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ResponseEntity<DeleteResponse<ParkingDto>> deleteById(Long id) {
+    public ResponseEntity<DeletedResponse<ParkingDto>> deleteById(Long id) {
         Parking parking = parkingRepository.deleteById(id);
         ParkingDto parkingDto = parkingMapper.entityParkingToDto(parking);
-        DeleteResponse<ParkingDto> response = deleteResponseMapper.toResponse(parkingDto);
+        DeletedResponse<ParkingDto> response = deletedResponseMapper.toResponse(parkingDto);
         return ResponseEntity.ok(response);
     }
 }
