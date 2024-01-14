@@ -5,15 +5,15 @@ import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.repository.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
+import com.example.parkingticketapp.shared.mapper.CreatedResponseMapper;
 import com.example.parkingticketapp.shared.mapper.DeleteResponseMapper;
+import com.example.parkingticketapp.shared.response.CreatedResponse;
 import com.example.parkingticketapp.shared.response.DeleteResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -24,6 +24,8 @@ public class ParkingServiceImpl implements ParkingService {
     private ParkingMapper parkingMapper;
     @Setter(onMethod = @__(@Autowired))
     private DeleteResponseMapper deleteResponseMapper;
+    @Setter(onMethod = @__(@Autowired))
+    private CreatedResponseMapper createdResponseMapper;
 
     @Override
     public ResponseEntity<ParkingDto> generateInfoAboutParking(Long id) {
@@ -33,10 +35,12 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ResponseEntity<ParkingDto> saveNewParking(ParkingDto parkingDto) {
+    public ResponseEntity<CreatedResponse<ParkingDto>> saveNewParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
         Parking savedParking = parkingRepository.save(parking).orElseThrow();
-        return ResponseEntity.ok(parkingMapper.entityParkingToDto(savedParking));
+        ParkingDto newParkingDto =  parkingMapper.entityParkingToDto(savedParking);
+        CreatedResponse<ParkingDto> response = createdResponseMapper.toResponse(newParkingDto);
+        return ResponseEntity.ok(response);
     }
 
     @Override

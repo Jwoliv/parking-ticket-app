@@ -2,6 +2,7 @@ package com.example.parkingticketapp.infrastructure.rest;
 
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
+import com.example.parkingticketapp.shared.response.CreatedResponse;
 import com.example.parkingticketapp.shared.response.DeleteResponse;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ParkingController {
     }
 
     @PostMapping
-    public ResponseEntity<ParkingDto> saveNewParking(@RequestBody ParkingDto parking) {
+    public ResponseEntity<CreatedResponse<ParkingDto>> saveNewParking(@RequestBody ParkingDto parking) {
         return parkingService.saveNewParking(parking);
     }
 }
