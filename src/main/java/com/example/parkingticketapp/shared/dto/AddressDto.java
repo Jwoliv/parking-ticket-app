@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.shared.dto;
 
-import com.example.parkingticketapp.model.Parking;
 import lombok.Builder;
 import lombok.Data;
 
