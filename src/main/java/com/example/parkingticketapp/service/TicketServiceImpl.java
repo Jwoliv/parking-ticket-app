@@ -36,8 +36,6 @@ public class TicketServiceImpl implements TicketService {
     @Setter(onMethod = @__(@Autowired))
     private UserMapper userMapper;
     @Setter(onMethod = @__(@Autowired))
-    private ParkingMapper parkingMapper;
-    @Setter(onMethod = @__(@Autowired))
     private Random random;
 
     @Override
