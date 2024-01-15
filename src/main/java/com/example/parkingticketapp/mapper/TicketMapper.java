@@ -3,6 +3,7 @@ package com.example.parkingticketapp.mapper;
 import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.model.User;
+import com.example.parkingticketapp.shared.dto.TicketDto;
 import com.example.parkingticketapp.shared.request.BuyTicketRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,6 +20,11 @@ public interface TicketMapper {
     Integer MINUTE_IN_HOUR = 60;
     String SYMBOLS_TICKET_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/";
     Integer ZERO = 0;
+
+
+    TicketDto entityTicketToDto(Ticket ticket);
+
+    Ticket dtoTicketToEntity(TicketDto ticketDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "numberPlace", expression = "java(generateNumberPlace(parking))")
