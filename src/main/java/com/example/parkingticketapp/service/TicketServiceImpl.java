@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.service;
 
-import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.mapper.TicketMapper;
 import com.example.parkingticketapp.mapper.UserMapper;
 import com.example.parkingticketapp.model.Parking;
