@@ -1,8 +1,6 @@
-package com.example.parkingticketapp.shared.mapper;
+package com.example.parkingticketapp.mapper;
 
 import com.example.parkingticketapp.exception.CustomException;
-import com.example.parkingticketapp.mapper.AddressMapper;
-import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.shared.dto.CustomExceptionDto;
 import org.mapstruct.Mapper;
 

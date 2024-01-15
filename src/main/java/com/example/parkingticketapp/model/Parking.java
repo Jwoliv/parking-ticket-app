@@ -3,6 +3,8 @@ package com.example.parkingticketapp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Entity
 @Builder
@@ -17,7 +19,7 @@ public class Parking {
     private String title;
     @Column(name = "description")
     private String description;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "address_id")
     private Address address;
     @Column(name = "total_parking_spaces")
@@ -26,4 +28,6 @@ public class Parking {
     private Long availableParkingSpaces;
     @Column(name = "price_per_hour")
     private Float pricePerHour;
+    @OneToMany(mappedBy = "parking", fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
 }

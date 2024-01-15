@@ -1,6 +1,10 @@
 package com.example.parkingticketapp.repository;
 
-import com.example.parkingticketapp.model.Parking;
+import com.example.parkingticketapp.model.User;
+import com.example.parkingticketapp.repository.interfaces.UserRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -14,66 +18,86 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
-@Repository
 @Transactional
-public class ParkingRepository {
+@Repository
+public class UserRepositoryImpl implements UserRepository {
+
     @Setter(onMethod = @__(@Autowired))
     private SessionFactory sessionFactory;
 
+    @Override
     @Transactional(readOnly = true)
-    public Parking findById(Long id) {
-        Parking parking = new Parking();
+    public User findById(Long id) {
+        User user = new User();
         try (Session session = sessionFactory.openSession()) {
-            parking = session.find(Parking.class, id);
+            user = session.find(User.class, id);
         } catch (Exception ex) {
             catchException(ex);
         }
-        return parking;
+        return user;
     }
 
-    public Optional<Parking> save(Parking parking) {
+    @Override
+    public Optional<User> save(User user) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.persist(parking);
+            session.persist(user);
             transaction.commit();
         } catch (Exception ex) {
             catchException(ex, transaction);
         }
-        return Optional.of(parking);
+        return Optional.of(user);
     }
 
-    public Parking deleteById(Long id) {
+    @Override
+    public User deleteById(Long id) {
         Transaction transaction = null;
-        Parking parking = new Parking();
+        User user = new User();
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Optional<Parking> optParking = Optional.ofNullable(session.find(Parking.class, id));
-            if (optParking.isPresent()) {
-                session.remove(optParking.get());
-                parking = optParking.get();
+            Optional<User> optUser = Optional.ofNullable(session.find(User.class, id));
+            if (optUser.isPresent()) {
+                user = optUser.get();
+                session.remove(optUser.get());
             }
             transaction.commit();
         } catch (Exception ex) {
             catchException(ex, transaction);
         }
-        return parking;
+        return user;
     }
 
 
-    public Parking updateParkingById(Long id, Parking parking) {
+    @Override
+    public User updateById(Long id, User user) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            Optional<Parking> optParking = Optional.ofNullable(session.find(Parking.class, id));
-            if (optParking.isPresent()) {
-                session.merge(parking);
+            Optional<User> optUser = Optional.ofNullable(session.find(User.class, id));
+            if (optUser.isPresent()) {
+                session.merge(user);
             }
             transaction.commit();
         } catch (Exception ex) {
             catchException(ex, transaction);
         }
-        return parking;
+        return user;
+    }
+
+    @Override
+    public User findByPersonalKey(String personalKey) {
+        User user = new User();
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("personalKey"), personalKey));
+            user = session.createQuery(criteriaQuery).uniqueResult();
+        } catch (Exception ex) {
+            catchException(ex);
+        }
+        return user;
     }
 
     private void catchException(Exception ex, Transaction tr) {
@@ -84,5 +108,4 @@ public class ParkingRepository {
     private void catchException(Exception ex) {
         log.error(ex.getMessage(), ex);
     }
-
 }
