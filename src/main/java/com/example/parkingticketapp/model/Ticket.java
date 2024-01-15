@@ -21,7 +21,7 @@ public class Ticket {
     @Column(name = "number_place")
     private Long numberPlace;
     @Column(name = "amount_bonus_money")
-    private Integer amountBonusMoney;
+    private Float amountBonusMoney;
     @Column(name = "amount_payed_money")
     private Integer amountPayedMoney;
     @Column(name = "change")

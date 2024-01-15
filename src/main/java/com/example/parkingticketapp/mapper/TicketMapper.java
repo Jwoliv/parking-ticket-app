@@ -14,12 +14,13 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class, AddressMapper.class, ParkingMapper.class})
 public interface TicketMapper {
     Integer LENGTH_TICKET_KEY = 48;
     Integer MINUTE_IN_HOUR = 60;
     String SYMBOLS_TICKET_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/";
     Integer ZERO = 0;
+    Float TEN_PERCENTAGE = 0.1F;
 
 
     TicketDto entityTicketToDto(Ticket ticket);
@@ -28,9 +29,10 @@ public interface TicketMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "numberPlace", expression = "java(generateNumberPlace(parking))")
-    @Mapping(target = "amountPayedMoney", expression = "java(generatedPayedAmountMoney(request,parking))")
+    @Mapping(target = "amountPayedMoney", expression = "java(generatedPayedAmountMoney(request, parking))")
+    @Mapping(target = "amountBonusMoney", expression = "java(generateBonusMoney(request, parking))")
     @Mapping(target = "startTime", source = "request.startTime")
-    @Mapping(target = "endTime", expression = "java(generateEndTime(request,parking))")
+    @Mapping(target = "endTime", expression = "java(generateEndTime(request, parking))")
     @Mapping(target = "key", expression = "java(generateTicketKey(random))")
     @Mapping(target = "user", source = "user")
     @Mapping(target = "parking", source = "parking")
@@ -62,6 +64,11 @@ public interface TicketMapper {
             ticketKey.append(SYMBOLS_TICKET_KEY.charAt(random.nextInt(ZERO, lengthSymbols)));
         }
         return ticketKey.toString();
+    }
+
+    default Float generateBonusMoney(BuyTicketRequest request, Parking parking) {
+        Integer amountBonusMoney = generatedPayedAmountMoney(request, parking);
+        return amountBonusMoney * TEN_PERCENTAGE;
     }
 
     private List<Long> generateAvailableSeats(long totalParkingSpaces, List<Long> takenSeats) {

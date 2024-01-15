@@ -10,13 +10,16 @@ import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.service.interfaces.TicketService;
 import com.example.parkingticketapp.service.interfaces.UserService;
 import com.example.parkingticketapp.shared.dto.TicketDto;
+import com.example.parkingticketapp.shared.dto.UserDto;
 import com.example.parkingticketapp.shared.request.BuyTicketRequest;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -63,7 +66,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void updateUserChange(User user, Ticket ticket) {
-        User updatedUser = userMapper.updateUserChange(user, ticket);
-        userService.update(updatedUser);
+        User updatedUser = userService.updateUserFields(user, ticket);
+        UserDto updatedUserDto = userMapper.entityUserToDto(updatedUser);
+        userService.update(updatedUserDto);
     }
 }

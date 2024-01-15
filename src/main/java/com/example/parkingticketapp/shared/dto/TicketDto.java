@@ -10,10 +10,12 @@ import java.time.LocalDateTime;
 public class TicketDto {
     private Long id;
     private Long numberPlace;
-    private Float amountPayedMoney;
+    private Float amountBonusMoney;
+    private Integer amountPayedMoney;
+    private Float change;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String key;
-    private ParkingDto parking;
     private UserDto user;
+    private ParkingDto parking;
 }

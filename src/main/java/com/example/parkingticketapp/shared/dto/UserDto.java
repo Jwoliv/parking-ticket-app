@@ -13,6 +13,7 @@ public class UserDto {
     private String firstname;
     private String lastname;
     private String surname;
+    private Float change;
     private Date dateBorn;
     private String personalKey;
     private Float bonusMoney;
