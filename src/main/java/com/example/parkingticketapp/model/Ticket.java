@@ -20,8 +20,12 @@ public class Ticket {
     private Long id;
     @Column(name = "number_place")
     private Long numberPlace;
+    @Column(name = "amount_bonus_money")
+    private Integer amountBonusMoney;
     @Column(name = "amount_payed_money")
-    private Float amountPayedMoney;
+    private Integer amountPayedMoney;
+    @Column(name = "change")
+    private Float change;
     @Column(name = "start_time")
     private LocalDateTime startTime;
     @Column(name = "end_time")

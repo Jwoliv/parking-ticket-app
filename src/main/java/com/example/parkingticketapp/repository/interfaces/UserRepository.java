@@ -9,4 +9,5 @@ public interface UserRepository {
     Optional<User> save(User user);
     User deleteById(Long id);
     User updateById(Long id, User user);
+    User findByPersonalKey(String personalKey);
 }

@@ -2,6 +2,9 @@ package com.example.parkingticketapp.repository;
 
 import com.example.parkingticketapp.model.User;
 import com.example.parkingticketapp.repository.interfaces.UserRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -80,6 +83,22 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return user;
     }
+
+    @Override
+    public User findByPersonalKey(String personalKey) {
+        User user = new User();
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("personal_key"), personalKey));
+            user = session.createQuery(criteriaQuery).uniqueResult();
+        } catch (Exception ex) {
+            catchException(ex);
+        }
+        return user;
+    }
+
 
     private void catchException(Exception ex, Transaction tr) {
         log.error(ex.getMessage(), ex);

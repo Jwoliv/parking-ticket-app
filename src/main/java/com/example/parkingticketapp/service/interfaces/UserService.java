@@ -8,4 +8,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
     Optional<User> findByPersonalKey(String personalKey);
+    Optional<User> findById(Long id);
+    Optional<User> save(User user);
+    Optional<User> update(User user);
 }
