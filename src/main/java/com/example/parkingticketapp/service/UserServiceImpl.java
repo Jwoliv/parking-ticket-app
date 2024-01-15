@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ActionResponse<UserDto>> save(UserDto user) {
-        setUpFieldsBeforeSave(user);
+        setUpFieldsBeforeFirstSave(user);
         User savedUser = userRepository.save(userMapper.dtoUserToEntity(user)).orElseThrow();
         UserDto savedUserDto = userMapper.entityUserToDto(savedUser);
         ActionResponse<UserDto> response = actionResponseMapper.toResponse(savedUserDto, CrudAction.CREATE);
@@ -61,12 +61,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<ActionResponse<UserDto>> deleteById(Long id) {
+        User deletedUser = userRepository.deleteById(id);
+        UserDto deletedUserDto = userMapper.entityUserToDto(deletedUser);
+        return ResponseEntity.ok(actionResponseMapper.toResponse(deletedUserDto, CrudAction.DELETE));
+    }
+
+    @Override
     public Optional<User> findByPersonalKey(String personalKey) {
         return Optional.of(userRepository.findByPersonalKey(personalKey));
     }
 
-    private void setUpFieldsBeforeSave(UserDto user) {
+    private void setUpFieldsBeforeFirstSave(UserDto user) {
         user.setPersonalKey(UniqueKeyGenerator.generateTicketKey());
         user.setChange(0.0F);
+        user.setBonusMoney(0.0F);
     }
 }

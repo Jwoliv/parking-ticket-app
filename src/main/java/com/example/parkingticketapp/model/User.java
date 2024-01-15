@@ -36,6 +36,6 @@ public class User {
     private Float bonusMoney;
     @Column(name = "change")
     private Float change;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
     private List<Ticket> tickets;
 }

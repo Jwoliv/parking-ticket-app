@@ -61,8 +61,8 @@ public class UserRepositoryImpl implements UserRepository {
             transaction = session.beginTransaction();
             Optional<User> optUser = Optional.ofNullable(session.find(User.class, id));
             if (optUser.isPresent()) {
-                session.remove(optUser.get());
                 user = optUser.get();
+                session.remove(optUser.get());
             }
             transaction.commit();
         } catch (Exception ex) {

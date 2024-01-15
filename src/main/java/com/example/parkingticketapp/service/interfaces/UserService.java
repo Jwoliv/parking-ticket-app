@@ -17,4 +17,5 @@ public interface UserService {
     void update(UserDto user);
     ResponseEntity<ActionResponse<UserDto>> updateWithResponse(UserDto user);
     User updateUserFields(User user, Ticket ticket);
+    ResponseEntity<ActionResponse<UserDto>> deleteById(Long id);
 }
