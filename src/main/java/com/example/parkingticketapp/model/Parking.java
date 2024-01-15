@@ -28,6 +28,6 @@ public class Parking {
     private Long availableParkingSpaces;
     @Column(name = "price_per_hour")
     private Float pricePerHour;
-    @OneToMany(mappedBy = "parking")
+    @OneToMany(mappedBy = "parking", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 }

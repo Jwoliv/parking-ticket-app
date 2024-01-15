@@ -95,7 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
-            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("personal_key"), personalKey));
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("personalKey"), personalKey));
             user = session.createQuery(criteriaQuery).uniqueResult();
         } catch (Exception ex) {
             catchException(ex);
