@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.repository;
 
-import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.model.User;
 import com.example.parkingticketapp.repository.interfaces.UserRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,7 +21,6 @@ import java.util.Optional;
 @Transactional
 @Repository
 public class UserRepositoryImpl implements UserRepository {
-    private static final Float TEN_PERCENTAGE = 0.1F;
 
     @Setter(onMethod = @__(@Autowired))
     private SessionFactory sessionFactory;
@@ -102,31 +99,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return user;
     }
-
-
-    @Override
-    public User updateUserFields(User user, Ticket ticket) {
-        user.setChange(generateChange(user, ticket));
-        user.setBonusMoney(generateBonusMoney(user, ticket));
-        user.setTickets(addTicketToUser(user, ticket));
-        return user;
-    }
-
-    private Float generateChange(User user, Ticket ticket) {
-        Float ticketChange = ticket.getChange();
-        return user.getChange() + ticketChange;
-    }
-
-    private Float generateBonusMoney(User user, Ticket ticket) {
-        return user.getBonusMoney() + (ticket.getAmountBonusMoney() * TEN_PERCENTAGE);
-    }
-
-    private List<Ticket> addTicketToUser(User user, Ticket ticket) {
-        List<Ticket> updatedTickets = user.getTickets();
-        updatedTickets.add(ticket);
-        return updatedTickets;
-    }
-
 
     private void catchException(Exception ex, Transaction tr) {
         log.error(ex.getMessage(), ex);

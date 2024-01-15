@@ -35,6 +35,7 @@ public interface TicketMapper {
     @Mapping(target = "key", expression = "java(generateTicketKey())")
     @Mapping(target = "user", source = "user")
     @Mapping(target = "parking", source = "parking")
+    @Mapping(target = "change", expression = "java(generateChange(request, parking))")
     Ticket generateTicketBeforeSave(BuyTicketRequest request, Parking parking, User user, Random random);
 
 
@@ -47,7 +48,12 @@ public interface TicketMapper {
     default Integer generatedPayedAmountMoney(BuyTicketRequest request, Parking parking) {
         Float payedMoney = request.getAmountPayedMoney();
         Float pricePerHour = parking.getPricePerHour();
-        return (int) Math.floor(payedMoney / pricePerHour);
+        return (int) (parking.getPricePerHour() * ((int) Math.floor(payedMoney / pricePerHour)));
+    }
+
+    default Float generateChange(BuyTicketRequest request, Parking parking) {
+        Integer payedAmountMoney = generatedPayedAmountMoney(request, parking);
+        return request.getAmountPayedMoney() - payedAmountMoney;
     }
 
     default LocalDateTime generateEndTime(BuyTicketRequest request, Parking parking) {

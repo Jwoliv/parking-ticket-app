@@ -29,5 +29,5 @@ public class Parking {
     @Column(name = "price_per_hour")
     private Float pricePerHour;
     @OneToMany(mappedBy = "parking", fetch = FetchType.EAGER)
-    private List<Ticket> tickets;
+    private List<Ticket> tickets;   //todo fix issue with a bonusMoney and change for user after save ticket
 }

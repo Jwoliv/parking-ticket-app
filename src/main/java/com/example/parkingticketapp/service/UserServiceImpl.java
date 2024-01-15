@@ -16,11 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Float TEN_PERCENTAGE = 0.1F;
+
     @Setter(onMethod = @__(@Autowired))
     private UserRepository userRepository;
     @Setter(onMethod = @__(@Autowired))
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserFields(User user, Ticket ticket) {
-        return userRepository.updateUserFields(user, ticket);
+        return setUserFields(user, ticket);
     }
 
     @Override
@@ -70,6 +73,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByPersonalKey(String personalKey) {
         return Optional.of(userRepository.findByPersonalKey(personalKey));
+    }
+
+    public User setUserFields(User user, Ticket ticket) {
+        user.setChange(generateChange(user, ticket));
+        user.setBonusMoney(generateBonusMoney(user, ticket));
+        user.setTickets(addTicketToUser(user, ticket));
+        return user;
+    }
+
+    private Float generateChange(User user, Ticket ticket) {
+        Float ticketChange = ticket.getChange();
+        return user.getChange() + ticketChange;
+    }
+
+    private Float generateBonusMoney(User user, Ticket ticket) {
+        return user.getBonusMoney() + (ticket.getAmountBonusMoney() * TEN_PERCENTAGE);
+    }
+
+    private List<Ticket> addTicketToUser(User user, Ticket ticket) {
+        List<Ticket> updatedTickets = user.getTickets();
+        updatedTickets.add(ticket);
+        return updatedTickets;
     }
 
     private void setUpFieldsBeforeFirstSave(UserDto user) {

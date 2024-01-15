@@ -11,5 +11,4 @@ public interface UserRepository {
     User deleteById(Long id);
     User updateById(Long id, User user);
     User findByPersonalKey(String personalKey);
-    User updateUserFields(User user, Ticket ticket);
 }
