@@ -9,6 +9,7 @@ import com.example.parkingticketapp.service.interfaces.UserService;
 import com.example.parkingticketapp.shared.dto.UserDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
 import com.example.parkingticketapp.shared.response.ActionResponse;
+import com.example.parkingticketapp.utils.UniqueKeyGenerator;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ActionResponse<UserDto>> save(UserDto user) {
+        user.setPersonalKey(UniqueKeyGenerator.generateTicketKey());
         User savedUser = userRepository.save(userMapper.dtoUserToEntity(user)).orElseThrow();
         UserDto savedUserDto = userMapper.entityUserToDto(savedUser);
         ActionResponse<UserDto> response = actionResponseMapper.toResponse(savedUserDto, CrudAction.CREATE);

@@ -14,12 +14,10 @@ import com.example.parkingticketapp.shared.dto.UserDto;
 import com.example.parkingticketapp.shared.request.BuyTicketRequest;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Random;
 
 @Slf4j

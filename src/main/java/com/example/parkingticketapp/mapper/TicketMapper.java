@@ -5,6 +5,7 @@ import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.model.User;
 import com.example.parkingticketapp.shared.dto.TicketDto;
 import com.example.parkingticketapp.shared.request.BuyTicketRequest;
+import com.example.parkingticketapp.utils.UniqueKeyGenerator;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,9 +17,7 @@ import java.util.stream.LongStream;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, AddressMapper.class, ParkingMapper.class})
 public interface TicketMapper {
-    Integer LENGTH_TICKET_KEY = 48;
     Integer MINUTE_IN_HOUR = 60;
-    String SYMBOLS_TICKET_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/";
     Integer ZERO = 0;
     Float TEN_PERCENTAGE = 0.1F;
 
@@ -33,7 +32,7 @@ public interface TicketMapper {
     @Mapping(target = "amountBonusMoney", expression = "java(generateBonusMoney(request, parking))")
     @Mapping(target = "startTime", source = "request.startTime")
     @Mapping(target = "endTime", expression = "java(generateEndTime(request, parking))")
-    @Mapping(target = "key", expression = "java(generateTicketKey(random))")
+    @Mapping(target = "key", expression = "java(generateTicketKey())")
     @Mapping(target = "user", source = "user")
     @Mapping(target = "parking", source = "parking")
     Ticket generateTicketBeforeSave(BuyTicketRequest request, Parking parking, User user, Random random);
@@ -57,13 +56,8 @@ public interface TicketMapper {
         return request.getStartTime().plusMinutes(generateCountPayedMinute(countMinute));
     }
 
-    default String generateTicketKey(Random random) {
-        StringBuilder ticketKey = new StringBuilder();
-        int lengthSymbols = SYMBOLS_TICKET_KEY.length();
-        for (int i = 0; i < LENGTH_TICKET_KEY; i++) {
-            ticketKey.append(SYMBOLS_TICKET_KEY.charAt(random.nextInt(ZERO, lengthSymbols)));
-        }
-        return ticketKey.toString();
+    default String generateTicketKey() {
+        return UniqueKeyGenerator.generateTicketKey();
     }
 
     default Float generateBonusMoney(BuyTicketRequest request, Parking parking) {
