@@ -1,6 +1,7 @@
 package com.example.parkingticketapp.repository;
 
 import com.example.parkingticketapp.model.Parking;
+import com.example.parkingticketapp.repository.interfaces.ParkingRepository;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -16,10 +17,11 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @Transactional
-public class ParkingRepository {
+public class ParkingRepositoryImpl implements ParkingRepository {
     @Setter(onMethod = @__(@Autowired))
     private SessionFactory sessionFactory;
 
+    @Override
     @Transactional(readOnly = true)
     public Parking findById(Long id) {
         Parking parking = new Parking();
@@ -31,6 +33,7 @@ public class ParkingRepository {
         return parking;
     }
 
+    @Override
     public Optional<Parking> save(Parking parking) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -43,6 +46,7 @@ public class ParkingRepository {
         return Optional.of(parking);
     }
 
+    @Override
     public Parking deleteById(Long id) {
         Transaction transaction = null;
         Parking parking = new Parking();
@@ -61,7 +65,8 @@ public class ParkingRepository {
     }
 
 
-    public Parking updateParkingById(Long id, Parking parking) {
+    @Override
+    public Parking updateById(Long id, Parking parking) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

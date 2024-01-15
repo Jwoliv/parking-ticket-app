@@ -34,6 +34,8 @@ public class User {
     private String personalKey;
     @Column(name = "bonus_money")
     private Float bonusMoney;
+    @Column(name = "change")
+    private Float change;
     @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
     private List<Ticket> tickets;
 }

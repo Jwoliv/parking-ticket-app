@@ -50,8 +50,11 @@ public class TicketServiceImpl implements TicketService {
             int paymentSumForFullHours = (int) Math.floor(payedMoney / pricePerHour);
             float change = payedMoney - paymentSumForFullHours; // todo plus this money to user
 
-            long countMinute = paymentSumForFullHours * 60L;
-            LocalDateTime endTime = request.getStartTime().plusMinutes(countMinute);
+            long countPayedMinute = paymentSumForFullHours * 60L;
+            LocalDateTime endTime = request.getStartTime().plusMinutes(countPayedMinute);
+
+            updateUserChange(user, paymentSumForFullHours, change);
+
 
             Ticket ticket = Ticket.builder()
                     .numberPlace(generateNumberPlace(parking))
@@ -65,6 +68,13 @@ public class TicketServiceImpl implements TicketService {
             // todo save ticket
         }
         return null;
+    }
+
+    private void updateUserChange(User user, float payedSum, float change) {
+        float bonusMoney = payedSum * 0.1F;
+        user.setBonusMoney(change);
+        user.setBonusMoney(user.getBonusMoney() + bonusMoney);
+        //todo save user
     }
 
     private Long generateNumberPlace(Parking parking) {

@@ -3,7 +3,7 @@ package com.example.parkingticketapp.service;
 import com.example.parkingticketapp.exception.CustomException;
 import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.model.Parking;
-import com.example.parkingticketapp.repository.ParkingRepository;
+import com.example.parkingticketapp.repository.interfaces.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
@@ -65,7 +65,7 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public ResponseEntity<ActionResponse<ParkingDto>> updateExistedParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
-        Parking updateParking = parkingRepository.updateParkingById(parking.getId(), parking);
+        Parking updateParking = parkingRepository.updateById(parking.getId(), parking);
         ParkingDto newParkingDto = parkingMapper.entityParkingToDto(updateParking);
         return ResponseEntity.ok(actionResponseMapper.toResponse(newParkingDto, CrudAction.UPDATE));
     }
