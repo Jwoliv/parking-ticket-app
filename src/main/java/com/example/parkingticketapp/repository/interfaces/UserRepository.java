@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.repository.interfaces;
 
-import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.model.User;
 
 import java.util.Optional;
