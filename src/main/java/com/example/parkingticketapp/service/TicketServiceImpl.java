@@ -1,5 +1,6 @@
 package com.example.parkingticketapp.service;
 
+import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.mapper.TicketMapper;
 import com.example.parkingticketapp.mapper.UserMapper;
 import com.example.parkingticketapp.model.Parking;
@@ -35,6 +36,8 @@ public class TicketServiceImpl implements TicketService {
     @Setter(onMethod = @__(@Autowired))
     private UserMapper userMapper;
     @Setter(onMethod = @__(@Autowired))
+    private ParkingMapper parkingMapper;
+    @Setter(onMethod = @__(@Autowired))
     private Random random;
 
     @Override
@@ -60,7 +63,13 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = ticketMapper.generateTicketBeforeSave(request, parking, user, random);
         Ticket savedTicket = ticketRepository.save(ticket).orElseThrow();
         updateUserChange(user, savedTicket);
+        decreesAvailableSpacesForParking(parking);
         return ticketMapper.entityTicketToDto(savedTicket);
+    }
+
+    private void decreesAvailableSpacesForParking(Parking parking) {
+        parking.setAvailableParkingSpaces(parking.getAvailableParkingSpaces() - 1);
+        parkingService.updateExistedParking(parkingMapper.entityParkingToDto(parking));
     }
 
     private void updateUserChange(User user, Ticket ticket) {
