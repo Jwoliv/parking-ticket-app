@@ -68,8 +68,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void decreesAvailableSpacesForParking(Parking parking) {
-        parking.setAvailableParkingSpaces(parking.getAvailableParkingSpaces() - 1);
-        parkingService.updateExistedParking(parkingMapper.entityParkingToDto(parking));
+        Long availableParkingSpaces = parking.getAvailableParkingSpaces() - 1;
+        parkingService.updateAvailableParkingSpaces(parking.getId(), availableParkingSpaces);
     }
 
     private void updateUserChange(User user, Ticket ticket) {

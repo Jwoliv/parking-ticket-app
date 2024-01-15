@@ -22,6 +22,6 @@ public class Address {
     private String street;
     @Column(name = "number")
     private String number;
-    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "address", cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH}, fetch = FetchType.EAGER)
     private Parking parking;
 }

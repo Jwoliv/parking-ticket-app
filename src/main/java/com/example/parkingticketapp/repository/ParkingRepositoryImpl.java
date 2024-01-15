@@ -81,6 +81,23 @@ public class ParkingRepositoryImpl implements ParkingRepository {
         return parking;
     }
 
+    @Override
+    public void updateAvailableParkingSpaces(Long id, Long availableParkingSpaces) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Optional<Parking> optParking = Optional.ofNullable(session.find(Parking.class, id));
+            if (optParking.isPresent()) {
+                Parking parking = optParking.get();
+                parking.setAvailableParkingSpaces(availableParkingSpaces);
+                session.merge(parking);
+            }
+            transaction.commit();
+        } catch (Exception ex) {
+            catchException(ex, transaction);
+        }
+    }
+
     private void catchException(Exception ex, Transaction tr) {
         log.error(ex.getMessage(), ex);
         Objects.requireNonNull(tr).rollback();

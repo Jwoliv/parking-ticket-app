@@ -70,6 +70,11 @@ public class ParkingServiceImpl implements ParkingService {
         return ResponseEntity.ok(actionResponseMapper.toResponse(newParkingDto, CrudAction.UPDATE));
     }
 
+    @Override
+    public void updateAvailableParkingSpaces(Long id, Long availableParkingSpaces) {
+        parkingRepository.updateAvailableParkingSpaces(id, availableParkingSpaces);
+    }
+
 
     private void checkExistedParking(Long id, Parking parking) {
         if (Objects.isNull(parking)) {

@@ -11,4 +11,5 @@ public interface ParkingRepository {
     Optional<Parking> save(Parking parking);
     Parking deleteById(Long id);
     Parking updateById(Long id, Parking parking);
+    void updateAvailableParkingSpaces(Long id, Long availableParkingSpaces);
 }
