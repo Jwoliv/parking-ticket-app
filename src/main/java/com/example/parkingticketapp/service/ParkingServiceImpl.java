@@ -1,19 +1,18 @@
 package com.example.parkingticketapp.service;
 
 import com.example.parkingticketapp.exception.CustomException;
+import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.repository.interfaces.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
-import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.shared.response.ActionResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -38,41 +37,43 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public ResponseEntity<ParkingDto> generateInfoAboutParking(Long id) {
+    public ParkingDto generateInfoAboutParking(Long id) {
         Parking parking = parkingRepository.findById(id);
         checkExistedParking(id, parking);
-        ParkingDto parkingDto = parkingMapper.entityParkingToDto(parking);
-        return ResponseEntity.ok(parkingDto);
+        return parkingMapper.entityParkingToDto(parking);
     }
 
     @Override
-    public ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(ParkingDto parkingDto) {
+    public ActionResponse<ParkingDto> saveNewParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
         Parking savedParking = parkingRepository.save(parking).orElseThrow();
         ParkingDto newParkingDto =  parkingMapper.entityParkingToDto(savedParking);
-        ActionResponse<ParkingDto> response = actionResponseMapper.toResponse(newParkingDto, CrudAction.CREATE);
-        return ResponseEntity.ok(response);
+        return actionResponseMapper.toResponse(newParkingDto, CrudAction.CREATE);
     }
 
     @Override
-    public ResponseEntity<ActionResponse<ParkingDto>> deleteById(Long id) {
+    public ActionResponse<ParkingDto> deleteById(Long id) {
         Parking parking = parkingRepository.deleteById(id);
         ParkingDto parkingDto = parkingMapper.entityParkingToDto(parking);
-        ActionResponse<ParkingDto> response = actionResponseMapper.toResponse(parkingDto, CrudAction.DELETE);
-        return ResponseEntity.ok(response);
+        return actionResponseMapper.toResponse(parkingDto, CrudAction.DELETE);
     }
 
     @Override
-    public ResponseEntity<ActionResponse<ParkingDto>> updateExistedParking(ParkingDto parkingDto) {
+    public ActionResponse<ParkingDto> updateExistedParking(ParkingDto parkingDto) {
         Parking parking = parkingMapper.dtoParkingToEntity(parkingDto);
         Parking updateParking = parkingRepository.updateById(parking.getId(), parking);
         ParkingDto newParkingDto = parkingMapper.entityParkingToDto(updateParking);
-        return ResponseEntity.ok(actionResponseMapper.toResponse(newParkingDto, CrudAction.UPDATE));
+        return actionResponseMapper.toResponse(newParkingDto, CrudAction.UPDATE);
     }
 
     @Override
     public void updateAvailableParkingSpaces(Long id, Long availableParkingSpaces) {
         parkingRepository.updateAvailableParkingSpaces(id, availableParkingSpaces);
+    }
+
+    @Override
+    public Boolean checkAvailableSeats(Parking parking) {
+        return parking.getAvailableParkingSpaces() > 0;
     }
 
 

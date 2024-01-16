@@ -13,7 +13,6 @@ import com.example.parkingticketapp.utils.UniqueKeyGenerator;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,12 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ActionResponse<UserDto>> save(UserDto user) {
+    public ActionResponse<UserDto> save(UserDto user) {
         setUpFieldsBeforeFirstSave(user);
         User savedUser = userRepository.save(userMapper.dtoUserToEntity(user)).orElseThrow();
         UserDto savedUserDto = userMapper.entityUserToDto(savedUser);
-        ActionResponse<UserDto> response = actionResponseMapper.toResponse(savedUserDto, CrudAction.CREATE);
-        return ResponseEntity.ok(response);
+        return actionResponseMapper.toResponse(savedUserDto, CrudAction.CREATE);
     }
 
     @Override
@@ -51,11 +49,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ActionResponse<UserDto>> updateWithResponse(UserDto user) {
+    public ActionResponse<UserDto> updateWithResponse(UserDto user) {
        User updatedUser = userRepository.updateById(user.getId(), userMapper.dtoUserToEntity(user));
        UserDto updatedUserDto = userMapper.entityUserToDto(updatedUser);
-       ActionResponse<UserDto> response = actionResponseMapper.toResponse(updatedUserDto, CrudAction.UPDATE);
-       return ResponseEntity.ok(response);
+       return actionResponseMapper.toResponse(updatedUserDto, CrudAction.UPDATE);
     }
 
     @Override
@@ -64,10 +61,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ActionResponse<UserDto>> deleteById(Long id) {
+    public ActionResponse<UserDto> deleteById(Long id) {
         User deletedUser = userRepository.deleteById(id);
         UserDto deletedUserDto = userMapper.entityUserToDto(deletedUser);
-        return ResponseEntity.ok(actionResponseMapper.toResponse(deletedUserDto, CrudAction.DELETE));
+        return actionResponseMapper.toResponse(deletedUserDto, CrudAction.DELETE);
     }
 
     @Override
