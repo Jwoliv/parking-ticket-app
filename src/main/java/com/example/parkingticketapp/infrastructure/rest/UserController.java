@@ -16,16 +16,16 @@ public class UserController {
 
     @PostMapping
     private ResponseEntity<ActionResponse<UserDto>> saveNewUser(@RequestBody UserDto user) {
-        return userService.save(user);
+        return ResponseEntity.ok(userService.save(user));
     }
 
     @PutMapping
     private ResponseEntity<ActionResponse<UserDto>> updateUser(@RequestBody UserDto user) {
-        return userService.updateWithResponse(user);
+        return ResponseEntity.ok(userService.updateWithResponse(user));
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<ActionResponse<UserDto>> deleteById(@PathVariable Long id) {
-        return userService.deleteById(id);
+        return ResponseEntity.ok(userService.deleteById(id));
     }
 }

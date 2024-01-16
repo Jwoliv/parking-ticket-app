@@ -19,6 +19,6 @@ public class TicketController {
 
     @PostMapping("/buy-ticket")
     private ResponseEntity<TicketDto> buyTicket(@RequestBody BuyTicketRequest request) {
-        return ticketService.buyTicket(request);
+        return ResponseEntity.ok(ticketService.buyTicket(request));
     }
 }

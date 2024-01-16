@@ -15,7 +15,6 @@ import com.example.parkingticketapp.shared.request.BuyTicketRequest;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -38,16 +37,16 @@ public class TicketServiceImpl implements TicketService {
     private Random random;
 
     @Override
-    public ResponseEntity<TicketDto> buyTicket(BuyTicketRequest request) {
+    public TicketDto buyTicket(BuyTicketRequest request) {
         User user = userService.findByPersonalKey(request.getPersonalKey()).orElseThrow();
         Parking parking = parkingService.findById(request.getParkingId());
-        if (parking.getAvailableParkingSpaces() == 0) {
+        if (!parkingService.checkAvailableSeats(parking)) {
             return null; // todo throw error
         }
         if (checkAmountPaymentMoney(request, parking)) {
-            return ResponseEntity.ok(createTicket(parking, request, user));
+            return createTicket(parking, request, user);
         }
-        return ResponseEntity.ok(TicketDto.builder().build());
+        return TicketDto.builder().build();
     }
 
     private Boolean checkAmountPaymentMoney(BuyTicketRequest request, Parking parking) {

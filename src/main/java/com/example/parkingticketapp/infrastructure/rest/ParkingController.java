@@ -16,21 +16,21 @@ public class ParkingController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ParkingDto> findParkingInfoById(@PathVariable("id") Long id) {
-        return parkingService.generateInfoAboutParking(id);
+        return ResponseEntity.ok(parkingService.generateInfoAboutParking(id));
     }
 
     @PutMapping
     public ResponseEntity<ActionResponse<ParkingDto>> updateParkingInfoById(@RequestBody ParkingDto parkingDto) {
-        return parkingService.updateExistedParking(parkingDto);
+        return ResponseEntity.ok(parkingService.updateExistedParking(parkingDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ActionResponse<ParkingDto>> deleteParkingById(@PathVariable("id") Long id) {
-        return parkingService.deleteById(id);
+        return ResponseEntity.ok(parkingService.deleteById(id));
     }
 
     @PostMapping
     public ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(@RequestBody ParkingDto parking) {
-        return parkingService.saveNewParking(parking);
+        return ResponseEntity.ok(parkingService.saveNewParking(parking));
     }
 }
