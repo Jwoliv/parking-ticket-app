@@ -11,4 +11,5 @@ public interface TicketRepository {
     Optional<Ticket> save(Ticket ticket);
     Ticket deleteById(Long id);
     Ticket updateById(Long id, Ticket ticket);
+    Optional<Ticket> findByKey(String ticketKey);
 }

@@ -23,14 +23,14 @@ public class ParkingRepositoryImpl implements ParkingRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Parking findById(Long id) {
+    public Optional<Parking> findById(Long id) {
         Parking parking = new Parking();
         try (Session session = sessionFactory.openSession()) {
             parking = session.find(Parking.class, id);
         } catch (Exception ex) {
             catchException(ex);
         }
-        return parking;
+        return Optional.of(parking);
     }
 
     @Override

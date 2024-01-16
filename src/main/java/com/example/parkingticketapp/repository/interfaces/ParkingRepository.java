@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface ParkingRepository {
-    Parking findById(Long id);
+    Optional<Parking> findById(Long id);
     Optional<Parking> save(Parking parking);
     Parking deleteById(Long id);
     Parking updateById(Long id, Parking parking);

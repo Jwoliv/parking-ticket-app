@@ -1,8 +1,12 @@
 package com.example.parkingticketapp.infrastructure.rest;
 
+import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
+import com.example.parkingticketapp.service.interfaces.TicketService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
+import com.example.parkingticketapp.shared.request.CheckInRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
+import com.example.parkingticketapp.shared.response.CheckInResponse;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class ParkingController {
     @Setter(onMethod = @__(@Autowired))
     private ParkingService parkingService;
+    @Setter(onMethod = @__(@Autowired))
+    private TicketService ticketService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ParkingDto> findParkingInfoById(@PathVariable("id") Long id) {
@@ -32,5 +38,11 @@ public class ParkingController {
     @PostMapping
     public ResponseEntity<ActionResponse<ParkingDto>> saveNewParking(@RequestBody ParkingDto parking) {
         return ResponseEntity.ok(parkingService.saveNewParking(parking));
+    }
+
+    @GetMapping("/check-in")
+    public ResponseEntity<CheckInResponse> checkInToParking(@RequestBody CheckInRequest request) {
+        Ticket ticket = ticketService.findByKey(request.getTicketKey());
+        return ResponseEntity.ok(parkingService.checkInToParking(request, ticket));
     }
 }
