@@ -1,7 +1,11 @@
 package com.example.parkingticketapp.repository;
 
 import com.example.parkingticketapp.model.Ticket;
+import com.example.parkingticketapp.model.User;
 import com.example.parkingticketapp.repository.interfaces.TicketRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -78,6 +82,22 @@ public class TicketRepositoryImpl implements TicketRepository {
             catchException(ex, transaction);
         }
         return ticket;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Ticket> findByKey(String ticketKey) {
+        Ticket ticket = new Ticket();
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Ticket> criteriaQuery = criteriaBuilder.createQuery(Ticket.class);
+            Root<Ticket> ticketRoot = criteriaQuery.from(Ticket.class);
+            criteriaQuery.select(ticketRoot).where(criteriaBuilder.equal(ticketRoot.get("key"), ticketKey));
+            ticket = session.createQuery(criteriaQuery).uniqueResult();
+        } catch (Exception ex) {
+            catchException(ex);
+        }
+        return Optional.of(ticket);
     }
 
     private void catchException(Exception ex, Transaction tr) {

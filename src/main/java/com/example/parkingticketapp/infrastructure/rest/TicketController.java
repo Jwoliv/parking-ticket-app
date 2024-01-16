@@ -1,5 +1,7 @@
 package com.example.parkingticketapp.infrastructure.rest;
 
+import com.example.parkingticketapp.mapper.TicketMapper;
+import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.service.interfaces.TicketService;
 import com.example.parkingticketapp.shared.dto.TicketDto;
 import com.example.parkingticketapp.shared.request.BuyTicketRequest;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TicketController {
     @Setter(onMethod = @__(@Autowired))
     private TicketService ticketService;
+    @Setter(onMethod = @__(@Autowired))
+    private TicketMapper ticketMapper;
 
     @PostMapping("/buy-ticket")
     private ResponseEntity<TicketDto> buyTicket(@RequestBody BuyTicketRequest request) {
-        return ResponseEntity.ok(ticketService.buyTicket(request));
+        Ticket ticket = ticketService.buyTicket(request);
+        return ResponseEntity.ok(ticketMapper.entityTicketToDto(ticket));
     }
 }

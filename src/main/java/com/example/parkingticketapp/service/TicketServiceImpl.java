@@ -37,7 +37,7 @@ public class TicketServiceImpl implements TicketService {
     private Random random;
 
     @Override
-    public TicketDto buyTicket(BuyTicketRequest request) {
+    public Ticket buyTicket(BuyTicketRequest request) {
         User user = userService.findByPersonalKey(request.getPersonalKey()).orElseThrow();
         Parking parking = parkingService.findById(request.getParkingId());
         if (!parkingService.checkAvailableSeats(parking)) {
@@ -46,7 +46,12 @@ public class TicketServiceImpl implements TicketService {
         if (checkAmountPaymentMoney(request, parking)) {
             return createTicket(parking, request, user);
         }
-        return TicketDto.builder().build();
+        return Ticket.builder().build();
+    }
+
+    @Override
+    public Ticket findByKey(String ticketKey) {
+        return ticketRepository.findByKey(ticketKey).orElseThrow();
     }
 
     private Boolean checkAmountPaymentMoney(BuyTicketRequest request, Parking parking) {
@@ -55,12 +60,12 @@ public class TicketServiceImpl implements TicketService {
         return payedMoney > pricePerHour;
     }
 
-    private TicketDto createTicket(Parking parking, BuyTicketRequest request, User user) {
+    private Ticket createTicket(Parking parking, BuyTicketRequest request, User user) {
         Ticket ticket = ticketMapper.generateTicketBeforeSave(request, parking, user, random);
         Ticket savedTicket = ticketRepository.save(ticket).orElseThrow();
         updateUserChange(user, savedTicket);
         decreesAvailableSpacesForParking(parking);
-        return ticketMapper.entityTicketToDto(savedTicket);
+        return savedTicket;
     }
 
     private void decreesAvailableSpacesForParking(Parking parking) {

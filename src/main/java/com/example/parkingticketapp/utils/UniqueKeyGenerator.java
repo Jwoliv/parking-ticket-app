@@ -8,7 +8,7 @@ import java.util.Random;
 
 @Component
 public class UniqueKeyGenerator {
-    private static final String SYMBOLS_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()_+-={}[]|\\:;\"'<>,.?/";
+    private static final String SYMBOLS_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final Integer LENGTH_KEY = 48;
     private static final  Integer ZERO = 0;
 
