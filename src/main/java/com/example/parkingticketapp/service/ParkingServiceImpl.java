@@ -1,6 +1,6 @@
 package com.example.parkingticketapp.service;
 
-import com.example.parkingticketapp.exception.CustomException;
+import com.example.parkingticketapp.enums.TypeAction;
 import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.mapper.TicketMapper;
@@ -8,23 +8,17 @@ import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.repository.interfaces.ParkingRepository;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
-import com.example.parkingticketapp.service.interfaces.TicketService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.dto.TicketDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
-import com.example.parkingticketapp.shared.request.CheckInRequest;
+import com.example.parkingticketapp.shared.request.ActivityParkingRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
-import com.example.parkingticketapp.shared.response.CheckInResponse;
+import com.example.parkingticketapp.shared.response.UseParkingActivityResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-
-import static com.example.parkingticketapp.exception.data.MessageException.ELEMENT_WITH_ID_DOES_NOT_EXIST;
 
 @Slf4j
 @Service
@@ -83,22 +77,38 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public CheckInResponse checkInToParking(CheckInRequest request, Ticket ticket) {
-        String ticketKey = request.getTicketKey();
+    public UseParkingActivityResponse checkInToParking(ActivityParkingRequest request, Ticket ticket) {
         Parking parking = parkingRepository.findById(request.getParkingId()).orElseThrow();
-        if (isParkingTicketValid(ticketKey, parking)) {
-            if (isTimeValid(ticket)) {
-                return CheckInResponse.builder()
-                        .ticket(ticketMapper.entityTicketToDto(ticket))
-                        .parking(parkingMapper.entityParkingToDto(parking))
-                        .checkInTime(LocalDateTime.now())
-                        .build();
-            }
+        if (validateBeforeParkingActivity(ticket, parking)) {
+            return UseParkingActivityResponse.builder()
+                    .ticket(ticketMapper.entityTicketToDto(ticket))
+                    .parking(parkingMapper.entityParkingToDto(parking))
+                    .typeAction(TypeAction.CHECK_IN)
+                    .activeTime(LocalDateTime.now())
+                    .build();
         }
-        return null; // todo throw exception
+        return null;
     }
 
-    private boolean isTimeValid(Ticket ticket) {
+    @Override
+    public UseParkingActivityResponse checkOutToParking(ActivityParkingRequest request, Ticket ticket) {
+        Parking parking = parkingRepository.findById(request.getParkingId()).orElseThrow();
+        if (validateBeforeParkingActivity(ticket, parking)) {
+            return UseParkingActivityResponse.builder()
+                    .ticket(ticketMapper.entityTicketToDto(ticket))
+                    .parking(parkingMapper.entityParkingToDto(parking))
+                    .typeAction(TypeAction.CHECK_OUT)
+                    .activeTime(LocalDateTime.now())
+                    .build();
+        }
+        return null;
+    }
+
+    private Boolean validateBeforeParkingActivity(Ticket ticket, Parking parking) {
+        return isTimeValid(ticket) && isParkingTicketValid(ticket.getKey(), parking);
+    }
+
+    private Boolean isTimeValid(Ticket ticket) {
         LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.isAfter(ticket.getStartTime()) && currentTime.isBefore(ticket.getEndTime());
     }

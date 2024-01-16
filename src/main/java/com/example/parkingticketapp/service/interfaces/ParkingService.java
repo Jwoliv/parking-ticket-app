@@ -3,9 +3,9 @@ package com.example.parkingticketapp.service.interfaces;
 import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.request.CheckInRequest;
+import com.example.parkingticketapp.shared.request.ActivityParkingRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
-import com.example.parkingticketapp.shared.response.CheckInResponse;
+import com.example.parkingticketapp.shared.response.UseParkingActivityResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,5 +17,6 @@ public interface ParkingService {
     ActionResponse<ParkingDto> updateExistedParking(ParkingDto parkingDto);
     void updateAvailableParkingSpaces(Long id, Long availableParkingSpaces);
     Boolean checkAvailableSeats(Parking parking);
-    CheckInResponse checkInToParking(CheckInRequest check, Ticket ticket);
+    UseParkingActivityResponse checkInToParking(ActivityParkingRequest check, Ticket ticket);
+    UseParkingActivityResponse checkOutToParking(ActivityParkingRequest check, Ticket ticket);
 }

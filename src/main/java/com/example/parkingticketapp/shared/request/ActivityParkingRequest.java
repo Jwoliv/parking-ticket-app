@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CheckInRequest {
+public class ActivityParkingRequest {
     private Long parkingId;
     private String ticketKey;
     private String personalKey;

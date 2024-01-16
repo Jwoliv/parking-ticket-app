@@ -4,9 +4,9 @@ import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.service.interfaces.ParkingService;
 import com.example.parkingticketapp.service.interfaces.TicketService;
 import com.example.parkingticketapp.shared.dto.ParkingDto;
-import com.example.parkingticketapp.shared.request.CheckInRequest;
+import com.example.parkingticketapp.shared.request.ActivityParkingRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
-import com.example.parkingticketapp.shared.response.CheckInResponse;
+import com.example.parkingticketapp.shared.response.UseParkingActivityResponse;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +41,14 @@ public class ParkingController {
     }
 
     @GetMapping("/check-in")
-    public ResponseEntity<CheckInResponse> checkInToParking(@RequestBody CheckInRequest request) {
+    public ResponseEntity<UseParkingActivityResponse> checkInToParking(@RequestBody ActivityParkingRequest request) {
         Ticket ticket = ticketService.findByKey(request.getTicketKey());
         return ResponseEntity.ok(parkingService.checkInToParking(request, ticket));
+    }
+
+    @GetMapping("/check-out")
+    public ResponseEntity<UseParkingActivityResponse> checkOutToParking(@RequestBody ActivityParkingRequest request) {
+        Ticket ticket = ticketService.findByKey(request.getTicketKey());
+        return ResponseEntity.ok(parkingService.checkOutToParking(request, ticket));
     }
 }
