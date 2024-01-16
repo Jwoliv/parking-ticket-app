@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class UseParkingActivityResponse {
+public class ParkingActivityResponse {
     private TicketDto ticket;
     private ParkingDto parking;
     private LocalDateTime activeTime;

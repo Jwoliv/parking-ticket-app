@@ -1,6 +1,5 @@
 package com.example.parkingticketapp.service;
 
-import com.example.parkingticketapp.enums.TypeAction;
 import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.mapper.ParkingMapper;
 import com.example.parkingticketapp.mapper.TicketMapper;
@@ -12,13 +11,17 @@ import com.example.parkingticketapp.shared.dto.ParkingDto;
 import com.example.parkingticketapp.shared.enums.CrudAction;
 import com.example.parkingticketapp.shared.request.ActivityParkingRequest;
 import com.example.parkingticketapp.shared.response.ActionResponse;
-import com.example.parkingticketapp.shared.response.UseParkingActivityResponse;
+import com.example.parkingticketapp.shared.response.ParkingActivityResponse;
+import com.example.parkingticketapp.utils.ParkingActivityResponseGenerator;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.example.parkingticketapp.enums.TypeAction.CHECK_IN;
+import static com.example.parkingticketapp.enums.TypeAction.CHECK_OUT;
 
 @Slf4j
 @Service
@@ -28,9 +31,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Setter(onMethod = @__(@Autowired))
     private ParkingMapper parkingMapper;
     @Setter(onMethod = @__(@Autowired))
-    private TicketMapper ticketMapper;
-    @Setter(onMethod = @__(@Autowired))
     private ActionResponseMapper actionResponseMapper;
+    @Setter(onMethod = @__(@Autowired))
+    private ParkingActivityResponseGenerator parkingActivityResponseGenerator;
 
     @Override
     public Parking findById(Long id) {
@@ -77,29 +80,19 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public UseParkingActivityResponse checkInToParking(ActivityParkingRequest request, Ticket ticket) {
+    public ParkingActivityResponse checkInToParking(ActivityParkingRequest request, Ticket ticket) {
         Parking parking = parkingRepository.findById(request.getParkingId()).orElseThrow();
         if (validateBeforeParkingActivity(ticket, parking)) {
-            return UseParkingActivityResponse.builder()
-                    .ticket(ticketMapper.entityTicketToDto(ticket))
-                    .parking(parkingMapper.entityParkingToDto(parking))
-                    .typeAction(TypeAction.CHECK_IN)
-                    .activeTime(LocalDateTime.now())
-                    .build();
+            return parkingActivityResponseGenerator.generateParkingActivityResponse(ticket, parking, CHECK_OUT);
         }
         return null;
     }
 
     @Override
-    public UseParkingActivityResponse checkOutToParking(ActivityParkingRequest request, Ticket ticket) {
+    public ParkingActivityResponse checkOutToParking(ActivityParkingRequest request, Ticket ticket) {
         Parking parking = parkingRepository.findById(request.getParkingId()).orElseThrow();
         if (validateBeforeParkingActivity(ticket, parking)) {
-            return UseParkingActivityResponse.builder()
-                    .ticket(ticketMapper.entityTicketToDto(ticket))
-                    .parking(parkingMapper.entityParkingToDto(parking))
-                    .typeAction(TypeAction.CHECK_OUT)
-                    .activeTime(LocalDateTime.now())
-                    .build();
+            return parkingActivityResponseGenerator.generateParkingActivityResponse(ticket, parking, CHECK_IN);
         }
         return null;
     }
