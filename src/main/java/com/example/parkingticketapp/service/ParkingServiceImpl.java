@@ -2,7 +2,6 @@ package com.example.parkingticketapp.service;
 
 import com.example.parkingticketapp.mapper.ActionResponseMapper;
 import com.example.parkingticketapp.mapper.ParkingMapper;
-import com.example.parkingticketapp.mapper.TicketMapper;
 import com.example.parkingticketapp.model.Parking;
 import com.example.parkingticketapp.model.Ticket;
 import com.example.parkingticketapp.repository.interfaces.ParkingRepository;
