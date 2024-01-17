@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext

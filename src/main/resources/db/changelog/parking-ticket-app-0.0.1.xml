@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+    <changeSet id="1705524338925-8" author="Jwoliv">
+        <sql>INSERT INTO example_entity VALUES (2, 'textExample', 'titleExample')</sql>
+        <comment>Added value to the entity</comment>
+    </changeSet>
+</databaseChangeLog>
